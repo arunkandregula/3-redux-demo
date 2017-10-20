@@ -1,0 +1,4 @@
+.Todo {
+  cursor: pointer; }
+  .Todo.completed {
+    text-decoration: line-through; }

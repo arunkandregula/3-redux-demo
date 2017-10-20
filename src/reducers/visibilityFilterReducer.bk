@@ -1,0 +1,14 @@
+import Constants from '../constants/Constants';
+
+const visibilityFilterReducer = (prevState=Constants.SHOW_ALL, action) => {
+	switch(action.type){
+		case Constants.SHOW_ALL:
+		case Constants.SHOW_ACTIVE:
+		case Constants.SHOW_COMPLETED:
+			return action.type;
+		default:
+			return prevState;	
+	}
+}
+
+export default visibilityFilterReducer;
