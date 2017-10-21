@@ -4,9 +4,7 @@ let _currentId = 0;
 
 const Utils = {
     getNextId: ()=>{
-        debugger
         _currentId = Utils.loadDataFromLocalStorage(Constants.NEXT_ID);
-        debugger
         if(_currentId == null){
             _currentId = 0;
         }

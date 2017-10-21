@@ -13,7 +13,8 @@ export default {
             data: data
         };
     },
-    getChangeVisibilityAction: (data)=>({
-		type: data.filter
+    getReceiveTodosAction: (todos)=>({
+        type: Constants.RECIEVE_TODOS,
+        data: todos
     })
 };

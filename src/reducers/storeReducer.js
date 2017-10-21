@@ -9,5 +9,4 @@ const storeReducer = (prevState={}, action)=>{
 
 export default storeReducer;
 
-
 export const getFilteredTodos = (state, filter) => fromTodosReducer.getFilteredTodos(state.todos, filter);

@@ -22,6 +22,13 @@ const byIdsReducer = (prevState={}, action)=>{
 			let obj = {...prevState, [action.data.id]: todoReducer(prevState[action.data.id], action)};
 			debugger;
 			return obj;
+		case Constants.RECIEVE_TODOS: 
+			let newMap = {...prevState};
+			debugger;
+			action.data.forEach((eachNewTodo)=>{
+				newMap[eachNewTodo.id] = eachNewTodo;
+			})			
+			return newMap;
 		default:
 			return prevState;
 	}
@@ -31,7 +38,12 @@ const allIdsReducer = (prevState=[], action)=>{
 	switch(action.type){
 		case Constants.ADD_TODO: 
 			return [...prevState, action.data.id];
-		case Constants.TOGGLE_TODO: 
+		case Constants.RECIEVE_TODOS: 
+			const oldSet = [...prevState];
+			debugger;
+			const newSet  = action.data.map((eachNewTodo)=>eachNewTodo.id)			
+			return oldSet.concat(newSet); // check 1
+		case Constants.TOGGLE_TODO: 	
 		default:
 			return prevState;
 	}

@@ -26,7 +26,8 @@ When we create a redux store, its initial state is determined by the root reduce
 We can override it with second argument to createStore.
 */
 
-const persistedData = Utils.loadDataFromLocalStorage();
+//const persistedData = Utils.loadDataFromLocalStorage();
+const persistedData = {};
 /*
 const persistedData = {
 	id: 7,
