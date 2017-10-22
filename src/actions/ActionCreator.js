@@ -1,6 +1,7 @@
 import Constants from '../constants/Constants';
 import Utils from '../utils/Utils';
-export default {
+import * as ServerAPI from '../services/ServerAPI';
+const ActionCreators = {
     getAddTodoAction: (data)=>{
         return {
             type: Constants.ADD_TODO,
@@ -13,8 +14,18 @@ export default {
             data: data
         };
     },
-    getReceiveTodosAction: (todos)=>({
+    getReceiveTodosAction: (data)=>({
         type: Constants.RECIEVE_TODOS,
-        data: todos
-    })
+        data: data
+    }),
+    getFetchTodosAction: (filter)=>{
+        return ServerAPI.fetchTodos(filter).then((response)=>
+            ActionCreators.getReceiveTodosAction({
+                todos: response.todos,
+                filter: filter
+            })
+        );
+    }
 };
+
+export default ActionCreators;

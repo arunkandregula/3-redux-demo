@@ -1,5 +1,4 @@
 import React from 'react';
-import Constants from '../../constants/Constants';
 import {Link} from 'react-router';
 import './Footer.css';
 import classNames from 'classnames';

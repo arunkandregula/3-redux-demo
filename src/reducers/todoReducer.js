@@ -1,5 +1,4 @@
 import Constants from '../constants/Constants';
-import Utils from '../utils/Utils';
 
 const todoReducer = (prevState={}, action) => {
 	switch(action.type){

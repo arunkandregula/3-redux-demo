@@ -1,11 +1,16 @@
 import todosReducer, * as fromTodosReducer from './todosReducer';
-
+import {combineReducers} from 'redux';
+/*
 const storeReducer = (prevState={}, action)=>{
-	debugger;
 	return {
 		todos: todosReducer(prevState.todos, action)
 	};
 }
+*/
+
+const storeReducer = combineReducers({
+	todos: todosReducer
+});
 
 export default storeReducer;
 
