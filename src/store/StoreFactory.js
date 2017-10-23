@@ -5,9 +5,6 @@ import Constants from '../constants/Constants';
 import _ from 'lodash';
 
 
-// Both monkey patching methods are functions that return functions that return functions
-// Refactored with better functional programming
-
 function getDispatchWithLogging(store){
 	return (originalDispatch) => {
 		if(!console.group){
@@ -26,7 +23,6 @@ function getDispatchWithLogging(store){
 
 }
 
-// Refactored with better functional programminbg
 function getDispatchWithPromiseSupport(store){
 	return (originalDispatch) => {
 		return (action)=>{
@@ -41,21 +37,19 @@ function getDispatchWithPromiseSupport(store){
 
 function wrapDispatchWithMiddleWares(store, middlewares){
 	let temp = null;
-	middlewares.forEach((eachMiddleware)=>{
+	middlewares.reverse().forEach((eachMiddleware)=>{
 		store.dispatch = eachMiddleware(store)(store.dispatch);
 	})
 }
 
 const configureStore = (store)=>{
-	const middlewares = [];
+	// add promise support to the store
+	const middlewares = [getDispatchWithPromiseSupport];
 
 	// add logging only in non-production environment
 	if(process.env.NODE_ENV !== 'production'){
 		middlewares.push(getDispatchWithLogging);	
 	}
-
-	// add promise support to the store
-	middlewares.push(getDispatchWithPromiseSupport);
 
 	wrapDispatchWithMiddleWares(store, middlewares);
 
