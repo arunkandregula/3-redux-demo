@@ -1,57 +1,20 @@
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {storeReducer} from '../reducers';
 import Utils from '../utils/Utils';
 import Constants from '../constants/Constants';
 import _ from 'lodash';
+import promise from 'redux-promise';
+import logger from 'redux-logger';
 
-
-function getDispatchWithLogging(store){
-	return (originalDispatch) => {
-		if(!console.group){
-			return originalDispatch;
-		}
-		return (action)=>{
-			console.group(action.type);
-			console.log('%c prev state', 'color:red', store.getState());
-			console.log('%c action', 'color:red', action);
-			const returnValue = originalDispatch(action);
-			console.log('%c next state', 'color:red', store.getState());
-			console.groupEnd(action.type);
-			return returnValue;
-		}
-	} 
-
-}
-
-function getDispatchWithPromiseSupport(store){
-	return (originalDispatch) => {
-		return (action)=>{
-			if(typeof action.then === 'function'){
-				return action.then(originalDispatch); 
-			} else{
-				return originalDispatch(action);
-			}
-		}
-	}
-}
-
-function wrapDispatchWithMiddleWares(store, middlewares){
-	let temp = null;
-	middlewares.reverse().forEach((eachMiddleware)=>{
-		store.dispatch = eachMiddleware(store)(store.dispatch);
-	})
-}
-
-const configureStore = (store)=>{
+const configureStore = ()=>{
 	// add promise support to the store
-	const middlewares = [getDispatchWithPromiseSupport];
+	const middlewares = [promise];
 
 	// add logging only in non-production environment
 	if(process.env.NODE_ENV !== 'production'){
-		middlewares.push(getDispatchWithLogging);	
+		middlewares.push(logger);	
 	}
-
-	wrapDispatchWithMiddleWares(store, middlewares);
+	const store = createStore(storeReducer, applyMiddleware(...middlewares));
 
 	store.subscribe(_.throttle(()=>{
 		const dataToBeSaved = {
@@ -61,11 +24,12 @@ const configureStore = (store)=>{
 		Utils.saveDataToLocalStorage(dataToBeSaved);
 	}, 1000));
 
+	return store;
 }
 
 
-const store = createStore(storeReducer);
-configureStore(store);
+
+const store = configureStore();
 
 const StoreFactory = {
 	getStore(){
