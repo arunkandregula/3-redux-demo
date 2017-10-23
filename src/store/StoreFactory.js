@@ -5,6 +5,9 @@ import Constants from '../constants/Constants';
 import _ from 'lodash';
 
 
+// Both monkey patching methods are functions that return functions that return functions
+// Refactored with better functional programming
+
 function getDispatchWithLogging(store){
 	return (originalDispatch) => {
 		if(!console.group){
@@ -20,8 +23,10 @@ function getDispatchWithLogging(store){
 			return returnValue;
 		}
 	} 
+
 }
 
+// Refactored with better functional programminbg
 function getDispatchWithPromiseSupport(store){
 	return (originalDispatch) => {
 		return (action)=>{
