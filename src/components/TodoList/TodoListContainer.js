@@ -26,11 +26,9 @@ const mapDispatchToTodoListProps = (dispatch) => {
         },
         fetchData: (filter)=>{
             debugger;
-            ActionCreator.getFetchTodosAction({
+            dispatch(ActionCreator.getFetchTodosAction({
                 filter
-            }).then((response)=>{
-                dispatch(response);
-            });
+            }));
         }
     };
 }
