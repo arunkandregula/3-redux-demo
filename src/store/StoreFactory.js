@@ -4,31 +4,32 @@ import Utils from '../utils/Utils';
 import Constants from '../constants/Constants';
 import _ from 'lodash';
 
-function getDispatchWithLogging(store){
-	const next = store.dispatch;
-	if(!console.group){
-		return next;
-	}
 
-	return (action)=>{
-		console.group(action.type);
-		console.log('%c prev state', 'color:red', store.getState());
-		console.log('%c action', 'color:red', action);
-		const returnValue = next(action);
-		console.log('%c next state', 'color:red', store.getState());
-		console.groupEnd(action.type);
-		return returnValue;
-	}
+function getDispatchWithLogging(store){
+	return (originalDispatch) => {
+		if(!console.group){
+			return originalDispatch;
+		}
+		return (action)=>{
+			console.group(action.type);
+			console.log('%c prev state', 'color:red', store.getState());
+			console.log('%c action', 'color:red', action);
+			const returnValue = originalDispatch(action);
+			console.log('%c next state', 'color:red', store.getState());
+			console.groupEnd(action.type);
+			return returnValue;
+		}
+	} 
 }
 
 function getDispatchWithPromiseSupport(store){
-	let next = store.dispatch;
-
-	return (action)=>{
-		if(typeof action.then === 'function'){
-			return action.then(next); 
-		} else{
-			return next(action);
+	return (originalDispatch) => {
+		return (action)=>{
+			if(typeof action.then === 'function'){
+				return action.then(originalDispatch); 
+			} else{
+				return originalDispatch(action);
+			}
 		}
 	}
 }
@@ -36,7 +37,7 @@ function getDispatchWithPromiseSupport(store){
 function wrapDispatchWithMiddleWares(store, middlewares){
 	let temp = null;
 	middlewares.forEach((eachMiddleware)=>{
-		store.dispatch = eachMiddleware(store);
+		store.dispatch = eachMiddleware(store)(store.dispatch);
 	})
 }
 
