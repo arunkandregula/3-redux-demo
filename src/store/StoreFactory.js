@@ -3,12 +3,27 @@ import {storeReducer} from '../reducers';
 import Utils from '../utils/Utils';
 import Constants from '../constants/Constants';
 import _ from 'lodash';
-import promise from 'redux-promise';
+
 import logger from 'redux-logger';
 
+const dispatchWithThunkSupport = (store)=>{
+	debugger;
+	return (nextDispatch)=>{
+		debugger;
+		return (action)=>{
+			debugger;
+			if(typeof action === 'function'){
+				action(nextDispatch);
+			} else {
+				nextDispatch(action); 
+			}
+		}
+	}
+
+}
 const configureStore = ()=>{
 	// add promise support to the store
-	const middlewares = [promise];
+	const middlewares = [dispatchWithThunkSupport];
 
 	// add logging only in non-production environment
 	if(process.env.NODE_ENV !== 'production'){

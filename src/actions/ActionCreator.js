@@ -8,7 +8,7 @@ const ActionCreators = {
             data: {...data, id: Utils.getNextId() }
         };
     },
-    getToggleTodoAction: (data)=>{
+    getToggleTodoAction: (data)=>{ 
         return {
             type: Constants.TOGGLE_TODO,
             data: data
@@ -21,10 +21,11 @@ const ActionCreators = {
     getRequestTodosAction: ()=>({
         type: Constants.REQUEST_TODOS,
     }),
-    fetchTodos: (filter, dispatch)=>{
+    fetchTodos: (filter) => (dispatch) => {
+
         dispatch(ActionCreators.getRequestTodosAction(filter));
 
-        ServerAPI.fetchTodos(filter).then((response)=>
+        return ServerAPI.fetchTodos(filter).then((response)=>
             dispatch(ActionCreators.getReceiveTodosAction({
                 todos: response,
                 filter: filter
@@ -32,4 +33,4 @@ const ActionCreators = {
     }
 };
 
-export default ActionCreators;
+export default ActionCreators;  

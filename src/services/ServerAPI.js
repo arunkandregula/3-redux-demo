@@ -24,7 +24,7 @@ function delay(ms){
 }
 
 export const fetchTodos = (filter)=> 
-  delay(1000).then(()=>{ 
+  delay(5000).then(()=>{ 
     debugger;
     switch(filter){
       case Constants.SHOW_COMPLETED: return fakeDatabase.todos.filter((eachTodo)=>eachTodo.isCompleted);

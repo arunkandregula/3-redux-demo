@@ -27,7 +27,7 @@ const mapDispatchToTodoListProps = (dispatch) => {
         fetchData: (filter)=>{
             //dispatch(ActionCreator.getRequestTodosAction(filter));
             //dispatch(ActionCreator.getFetchTodosAction(filter));
-            ActionCreator.fetchTodos(filter, dispatch);
+            ActionCreator.fetchTodos(filter)(dispatch);
         }
     };
 }

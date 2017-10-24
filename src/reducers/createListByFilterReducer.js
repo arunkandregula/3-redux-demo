@@ -2,11 +2,8 @@ import Constants from '../constants/Constants';
 import {combineReducers} from 'redux';
 
 export default function createListByFilterReducer(filter=Constants.SHOW_ALL){
-	debugger;
 	const idsByFilterReducer = (prevState=[], action)=>{
-		debugger;
 		if(!action.data || action.data.filter !== filter){
-			debugger;
 			return prevState;
 		}
 		switch(action.type){
