@@ -19,6 +19,7 @@ const ActionCreators = {
         data: data
     }),
     getFetchTodosAction: (filter)=>{
+        debugger;
         return ServerAPI.fetchTodos(filter).then((response)=>
             ActionCreators.getReceiveTodosAction({
                 todos: response,
