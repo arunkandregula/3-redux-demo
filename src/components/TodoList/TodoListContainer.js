@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ActionCreator from '../../actions/ActionCreator';
 import TodoList from './TodoList';
 import {withRouter} from 'react-router';
-import {getFilteredTodos} from '../../reducers';
+import {getFilteredTodos, isFetching} from '../../reducers';
 import Constants from '../../constants/Constants';
 
 const mapStateToTodoListProps = (state, ownProps) => {
@@ -12,7 +12,8 @@ const mapStateToTodoListProps = (state, ownProps) => {
     console.log('filter : ', filter );
     return {
         todos: getFilteredTodos(state, filter),
-        filter: filter
+        filter: filter,
+        isFetching: isFetching(state, filter)
     };
 }
 
@@ -24,8 +25,8 @@ const mapDispatchToTodoListProps = (dispatch) => {
             }));
         },
         fetchData: (filter)=>{
-            const action = dispatch(ActionCreator.getFetchTodosAction(filter));
-            console.log('Returned action: ' , action);
+            dispatch(ActionCreator.getRequestTodosAction(filter));
+            dispatch(ActionCreator.getFetchTodosAction(filter));
         }
     };
 }

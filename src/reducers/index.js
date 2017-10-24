@@ -1,4 +1,6 @@
 export {default as storeReducer} from './storeReducer';
 
-export {getFilteredTodos} from './storeReducer'
+export {getFilteredTodos, isFetching} from './storeReducer';
+
+
 

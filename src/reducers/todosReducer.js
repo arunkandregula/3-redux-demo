@@ -1,8 +1,9 @@
 import Constants from '../constants/Constants';
 import {combineReducers} from 'redux';
 import byIdReducer, * as fromByIdReducer from './byIdReducer';
-import createListByFilterReducer from './createListByFilterReducer';
+import createListByFilterReducer, * as fromListByFilter from './createListByFilterReducer';
 
+debugger;
 const listByFilterReducer = combineReducers({
 	[Constants.SHOW_ALL]: createListByFilterReducer(Constants.SHOW_ALL),
 	[Constants.SHOW_ACTIVE]: createListByFilterReducer(Constants.SHOW_ACTIVE),
@@ -12,17 +13,18 @@ const listByFilterReducer = combineReducers({
 const todosReducer = (prevState={}, action)=>{
 	return {
 		byIds: byIdReducer(prevState.byIds, action),
-		listByFilter: listByFilterReducer(prevState.allIds, action)
+		listByFilter: listByFilterReducer(prevState.listByFilter, action)
 	};
 }
 export default todosReducer;
 
 export function getFilteredTodos(state, filter){
 	debugger;
-	if(state.listByFilter[filter] == null){
+	const ids = fromListByFilter.getIds(state.listByFilter[filter]);
+	if(ids == null){
 		return [];
 	}
-	return state.listByFilter[filter].map((eachId)=>{
+	return ids.map((eachId)=>{
 		return fromByIdReducer.getTodo(state.byIds, eachId);
 	});
 }

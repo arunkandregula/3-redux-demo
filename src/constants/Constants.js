@@ -7,5 +7,6 @@ export default {
     SHOW_ACTIVE: 'active',
     SHOW_COMPLETED: 'completed',
     NEXT_ID: 'NEXT_ID',
-    RECIEVE_TODOS: 'RECIEVE_TODOS'
+    RECIEVE_TODOS: 'RECIEVE_TODOS',
+    REQUEST_TODOS: 'REQUEST_TODOS'
 };

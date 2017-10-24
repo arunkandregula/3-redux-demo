@@ -18,6 +18,9 @@ const ActionCreators = {
         type: Constants.RECIEVE_TODOS,
         data: data
     }),
+    getRequestTodosAction: ()=>({
+        type: Constants.REQUEST_TODOS,
+    }),
     getFetchTodosAction: (filter)=>{
         debugger;
         return ServerAPI.fetchTodos(filter).then((response)=>
