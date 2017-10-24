@@ -21,13 +21,14 @@ const ActionCreators = {
     getRequestTodosAction: ()=>({
         type: Constants.REQUEST_TODOS,
     }),
-    getFetchTodosAction: (filter)=>{
-        debugger;
-        return ServerAPI.fetchTodos(filter).then((response)=>
-            ActionCreators.getReceiveTodosAction({
+    fetchTodos: (filter, dispatch)=>{
+        dispatch(ActionCreators.getRequestTodosAction(filter));
+
+        ServerAPI.fetchTodos(filter).then((response)=>
+            dispatch(ActionCreators.getReceiveTodosAction({
                 todos: response,
                 filter: filter
-            })); 
+        }))); 
     }
 };
 
