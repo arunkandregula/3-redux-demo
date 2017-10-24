@@ -1,5 +1,5 @@
 import Constants from '../constants/Constants';
-import todoReducer from './todoReducer';
+import {combineReducers} from 'redux';
 
 /*
 const todosReducer = (prevState=[], action)=>{
@@ -16,62 +16,74 @@ const todosReducer = (prevState=[], action)=>{
 const byIdsReducer = (prevState={}, action)=>{
 	debugger;
 	switch(action.type){
-		case Constants.ADD_TODO: 
-		case Constants.TOGGLE_TODO: 
-			debugger; 
-			let obj = {...prevState, [action.data.id]: todoReducer(prevState[action.data.id], action)};
-			debugger;
-			return obj;
-			/*
 		case Constants.RECIEVE_TODOS: 
 			let newMap = {...prevState};
 			debugger;
-			action.data.forEach((eachNewTodo)=>{
+			action.data.todos.forEach((eachNewTodo)=>{
 				newMap[eachNewTodo.id] = eachNewTodo;
 			})			
 			return newMap;
-			*/
 		default:
 			return prevState;
 	}
 }
 
 const allIdsReducer = (prevState=[], action)=>{
+	debugger;
+	if(!action.data || action.data.filter !== Constants.SHOW_ALL){
+		return prevState;
+	}
 	switch(action.type){
-		case Constants.ADD_TODO: 
-			return [...prevState, action.data.id];
-			/*
 		case Constants.RECIEVE_TODOS: 
-			const oldSet = [...prevState];
-			debugger;
-			const newSet  = action.data.map((eachNewTodo)=>eachNewTodo.id)			
-			return oldSet.concat(newSet); // check 1
-			*/
-		case Constants.TOGGLE_TODO: 	
-		default:
-			return prevState;
+			return action.data.todos.map(eachTodo=>eachTodo.id);
+		default: 
+			return prevState;	
 	}
 }
+
+const activeIdsReducer = (prevState=[], action)=>{
+	debugger;
+	if(!action.data || action.data.filter !== Constants.SHOW_ACTIVE){
+		return prevState;
+	}
+	switch(action.type){
+		case Constants.RECIEVE_TODOS: 
+			return action.data.todos.map(eachTodo=>eachTodo.id);
+		default: 
+			return prevState;	
+	}
+}
+
+const completedIdsReducer = (prevState=[], action)=>{
+	debugger;
+	if(!action.data || action.data.filter !== Constants.SHOW_COMPLETED){
+		return prevState;
+	}
+	switch(action.type){
+		case Constants.RECIEVE_TODOS: 
+			return action.data.todos.map(eachTodo=>eachTodo.id);
+		default: 
+			return prevState;	
+	}
+}
+
+
+const idsByFilterReducer = combineReducers({
+	[Constants.SHOW_ALL]: allIdsReducer,
+	[Constants.SHOW_ACTIVE]: activeIdsReducer,
+	[Constants.SHOW_COMPLETED]: completedIdsReducer
+});
 
 const todosReducer = (prevState={}, action)=>{
 	return {
 		byIds: byIdsReducer(prevState.byIds, action),
-		allIds: allIdsReducer(prevState.allIds, action)
+		idsByFilter: idsByFilterReducer(prevState.allIds, action)
 	};
 }
 export default todosReducer;
 
 export function getFilteredTodos(state, filter){
 	debugger;
-	const todos = state.allIds.map((eachId)=>state.byIds[eachId]);
-    return todos.filter((eachTodo)=>{
-        switch(filter){
-            case Constants.SHOW_ACTIVE: return !eachTodo.isCompleted;
-            case Constants.SHOW_COMPLETED: return eachTodo.isCompleted;
-            default:
-                break;
-        }
-        return true;
-    });
+	return state.idsByFilter[filter].map((eachId)=>state.byIds[eachId]);
 }
 

@@ -21,10 +21,9 @@ const ActionCreators = {
     getFetchTodosAction: (filter)=>{
         return ServerAPI.fetchTodos(filter).then((response)=>
             ActionCreators.getReceiveTodosAction({
-                todos: response.todos,
+                todos: response,
                 filter: filter
-            })
-        );
+            })); 
     }
 };
 

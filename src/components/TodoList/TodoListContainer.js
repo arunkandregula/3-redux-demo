@@ -19,42 +19,28 @@ const mapStateToTodoListProps = (state, ownProps) => {
 const mapDispatchToTodoListProps = (dispatch) => {
     return {
         onTodoClick: (id)=>{
-            debugger;
             dispatch(ActionCreator.getToggleTodoAction({
                 id
             }));
         },
         fetchData: (filter)=>{
-            debugger;
-            dispatch(ActionCreator.getFetchTodosAction({
-                filter
-            }));
+            const action = dispatch(ActionCreator.getFetchTodosAction(filter));
+            console.log('Returned action: ' , action);
         }
     };
 }
 
 class VisibleTodoList extends React.Component{
     componentDidMount(){
-        this.fetchData(this.props.filter);
+        this.props.fetchData(this.props.filter);
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.filter !== this.props.filter){
             console.log('componentWillReceiveProps with nextProps ', nextProps, ', oldProps: ', this.props);
-            this.fetchData(nextProps.filter);
+            this.props.fetchData(nextProps.filter);
         }
     }
-    /*
-    fetchData(filter){
-        debugger;
-        ServerAPI.fetchTodos(filter).then((response)=>{
-            this.props.onRecieveTodos(filter, response);
-        });
-    }
-    */
-    fetchData(filter){
-        debugger;
-        this.props.fetchData(filter);
-    }
+  
     render(){
         return <TodoList {...this.props} />;
     }
